@@ -1,4 +1,4 @@
-package academy.javapro.lab05;
+
 
 import java.util.Scanner;
 
@@ -30,8 +30,42 @@ public class MathCalculatorLab {
     //
     // Example: fibonacci(8) = 21
     public static Runnable fibonacciCalculator(CalculatorBase calc) {
-        // TODO: Return a Runnable (use lambda or anonymous class)
-        return null; // Replace this
+        
+	Runnable task = () -> {
+	
+	String thread = Thread.currentThread().getName();
+	System.out.println(thread + " computing: fib(" + calc.n + ")");
+
+	if(calc.n == 0){
+	calc.result = 0;
+	}else if (calc.n == 1){
+	calc.result = 1;
+	}else{
+
+	int previous = 0;
+	int current = 1;
+
+	for(int i = 2; i <= calc.n; i++){
+	int next = previous + current;
+	previous = current;
+	current = next;
+
+	try{
+	Thread.sleep(5);
+	}catch(InterruptedException e){
+	throw new RuntimeException(e);
+	}
+	}
+
+	calc.result = current;
+	}
+	System.out.println(thread + " completed: fibonacci(" + calc.n + ") =" + calc.result);
+	};
+
+	Thread thread = new Thread(task);
+	thread.start();
+
+	return thread;
     }
 
     // TODO 2: Implement this method
@@ -47,8 +81,30 @@ public class MathCalculatorLab {
     //
     // Example: sumOfSquares(5) = 1 + 4 + 9 + 16 + 25 = 55
     public static Runnable sumOfSquaresCalculator(CalculatorBase calc) {
-        // TODO: Return a Runnable (use lambda or anonymous class)
-        return null; // Replace this
+       
+	Runnable task = () -> {
+	String thread = Thread.currentThread().getName();
+	System.out.println(thread + " computing 1² + 2² + 3² + ... +" + calc.n + "²");
+	int sum = 0;
+
+	for(int i = 1; i <= calc.n; i++){
+	sum += Math.pow(i, 2);
+	
+	try{
+        Thread.sleep(5);
+        }catch(InterruptedException e){
+        throw new RuntimeException(e);
+        }
+        }
+	calc.result = sum;
+	System.out.println(thread + " sumOfSquares(" + calc.n + ") = " + calc.result);
+	};
+
+	Thread thread = new Thread(task); 
+	thread.start();
+	
+	return thread;
+
     }
 
     // Main method (PROVIDED - DO NOT MODIFY)
